@@ -1,0 +1,24 @@
+{
+  "name": "world",
+  "version": "1.0.0",
+  "description": "Creature world simulation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r47717/world.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r47717/world/issues"
+  },
+  "homepage": "https://github.com/r47717/world#readme",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "progress": "^2.0.3"
+  }
+}

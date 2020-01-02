@@ -1,16 +1,15 @@
-// Crockford coding style
+const chalk = require('chalk');
+const {creature_generator} = require('./seeder');
+const { make_bar } = require('./progress');
 
-const {creatureGenerator} = require('./seeder');
+const population = 100_000;
+const world = [...creature_generator(population)];
 
-const population = 100;
-const world = [...creatureGenerator(population)];
+console.log(chalk.bold(chalk.green(`Population size: ${world.length}`)));
 
-console.log(world.length);
+const bar = make_bar(world.length);
 
-const filtered = world.filter(c => c.filter('january'));
-console.log(filtered.length);
-
-world.forEach(c => c.act());
-
-console.log(world[0]);
-
+world.forEach(c => {
+  c.act();
+  bar.tick();
+});

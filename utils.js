@@ -1,8 +1,8 @@
 /**
  * Returns index of random array elem
  * e.g. probability = [10, 20, 30, 40] (sum is 100%)
- * 
- * @param {Array} probability 
+ *
+ * @param {Array} probability
  */
 function random_probability(probability) {
     const runs = probability.slice().fill(0);
@@ -28,7 +28,7 @@ function random_probability(probability) {
 
 module.exports = {
     random_probability,
-}
+};
 
 // tests
 

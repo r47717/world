@@ -1,5 +1,3 @@
-// Crockford coding style
-
 const {random_probability} = require('./utils');
 const MAX_LOG_COUNT = 100;
 
