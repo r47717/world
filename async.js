@@ -16,7 +16,7 @@ function sequence(funcs, value, callback) {
   executor(funcs.slice());
 }
 
-function parallel(funcs, values, callback) {
+function all(funcs, values, callback) {
   const results = new Array(funcs.length);
   let done = 0;
 
@@ -29,8 +29,19 @@ function parallel(funcs, values, callback) {
       }
     });
   }
+}
 
-  return results;
+function race(funcs, values, callback) {
+  let done = false;
+
+  for (let i = 0; i < funcs.length; i++) {
+    funcs[i](values[i], function(result) {
+      if (!done) {
+        done = true;
+        callback(result);
+      }
+    });
+  }
 }
 
 
@@ -53,7 +64,11 @@ if (require.main === module) {
     console.log('sequence result: ', val);
   });
 
-  parallel([f1, f2, f3], [1, 1, 1], function(vals) {
-    console.log('parallel result: ', vals);
+  all([f1, f2, f3], [1, 1, 1], function(vals) {
+    console.log('all result: ', vals);
+  });
+
+  race([f1, f2, f3], [1, 1, 1], function(val) {
+    console.log('race result: ', val);
   });
 }
