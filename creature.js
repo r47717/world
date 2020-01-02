@@ -7,7 +7,7 @@ const actions = ['noop', 'move', 'eat', 'sleep'];
 
 function next_action() {
     const activity_profile_map = {
-        'active': [10, 60, 10, 10],
+        'active': [10, 60, 20, 10],
         'slippy': [20, 40, 10, 30],
         'meditative': [30, 30, 10, 30],
     };
@@ -55,10 +55,20 @@ const creature_base = {
     filter(...tags) {
         return tags.every(item => this.tags.has(item));
     },
+    is_dead() {
+        return this.tags.has('dead');
+    },
     act() {
+        if (this.is_dead()) {
+            return;
+        }
+
         const action = next_action.call(this);
         action_handlers[action].call(this);
         this.age += 1;
+        if (this.energy <= 0) {
+            this.tag('dead');
+        }
     }
 };
 
