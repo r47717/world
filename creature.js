@@ -1,41 +1,43 @@
+const uuid = require('uuid/v1');
 const {random_probability} = require('./utils');
 
 const MAX_LOG_COUNT = 100;
+const LOG_ENABLED = false;
 const MAX_AGE = 100;
 const MIN_BIRTH_AGE = 20;
 const MAX_BIRTH_AGE = 60;
+const MAX_BIRTH_RATE = 3;
 
 // private creature functions
 
 const actions = ['move', 'eat', 'sleep', 'birth'];
+const activity_profile_map = {
+    'active': [64, 15, 20, 3],
+    'sleepy': [44, 15, 40, 3],
+};
 
 function next_action() {
-    const activity_profile_map = {
-        'active': [64, 15, 20, 1],
-        'slippy': [44, 15, 40, 1],
-    };
     const selected_index = random_probability(activity_profile_map[this.activity_profile]);
-
     return actions[selected_index];
 }
 
 const action_handlers = {
     eat() {
-        log.call(this, `eat action performed`);
+        LOG_ENABLED && log.call(this, `eat action performed`);
         this.energy += 3;
     },
 
     move() {
-        log.call(this, `move action performed`);
+        LOG_ENABLED && log.call(this, `move action performed`);
         this.energy -= 1;
     },
 
     sleep() {
-        log.call(this, `sleep action performed`);
+        LOG_ENABLED && log.call(this, `sleep action performed`);
         this.energy += 1;
     },
     birth() {
-        log.call(this, `birth action performed`);
+        LOG_ENABLED && log.call(this, `birth action performed`);
         this.energy -= 2;
     }
 };
@@ -68,39 +70,43 @@ const creature_base = {
         this.age += 1;
         const action = next_action.call(this);
         action_handlers[action].call(this);
+        this.stat[action] += 1;
         if (this.energy <= 0 || this.age > MAX_AGE) {
             this.tag('dead');
         }
-        if (action === 'birth' && this.age >= MIN_BIRTH_AGE && this.age <= MAX_BIRTH_AGE) {
+        if (action === 'birth' &&
+            this.age >= MIN_BIRTH_AGE &&
+            this.age <= MAX_BIRTH_AGE &&
+            this.stat.birth <= MAX_BIRTH_RATE
+        ) {
             return true;
         }
 
         return false;
     },
     clone() {
-        const cl = Object.assign({}, this);
-        Object.setPrototypeOf(cl, creature_base);
-        cl.age = 0;
-        cl.energy = 100;
-        cl.logs = [];
-        cl.tags = new Set();
-        cl.coords = [...this.coords];
-
-        return cl;
+        return creature_factory(this);
     }
 };
 
 // creature factory
 
-function creature_factory(type = 'generic') {
+function creature_factory(parent = null, type = 'generic') {
     return Object.setPrototypeOf({
         type,
-        activity_profile: 'slippy',
+        id: uuid(),
+        activity_profile: parent
+            ? parent.activity_profile
+            : Object.keys(activity_profile_map)[Math.floor(Math.random() * 2)],
         age: 0,
-        energy: 100, // %
+        energy: 100,
         tags: new Set(),
-        coords: [0, 0, 0, 0],
+        coords: parent ? [...parent.coords] : [0, 0, 0, 0],
         logs: [],
+        stat: Object.assign({},
+            ...actions.map(action => ({ [action]: 0 }))
+        ),
+        parent
     }, creature_base);
 }
 

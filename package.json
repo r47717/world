@@ -19,6 +19,7 @@
   "homepage": "https://github.com/r47717/world#readme",
   "dependencies": {
     "chalk": "^3.0.0",
-    "progress": "^2.0.3"
+    "progress": "^2.0.3",
+    "uuid": "^3.3.3"
   }
 }
