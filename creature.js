@@ -1,6 +1,7 @@
 const uuid = require('uuid/v1');
-const {random_probability} = require('./utils');
+const {random_probability, random_number_string} = require('./utils');
 
+const DNA_SIZE = 100;
 const MAX_LOG_COUNT = 100;
 const LOG_ENABLED = false;
 const MAX_AGE = 100;
@@ -13,7 +14,7 @@ const MAX_BIRTH_RATE = 3;
 const actions = ['move', 'eat', 'sleep', 'birth'];
 const activity_profile_map = {
     'active': [64, 15, 20, 3],
-    'sleepy': [44, 15, 40, 3],
+    'sleepy': [44, 15, 40, 2],
 };
 
 function next_action() {
@@ -95,6 +96,7 @@ function creature_factory(parent = null, type = 'generic') {
     return Object.setPrototypeOf({
         type,
         id: uuid(),
+        dna: parent ? parent.dna : random_number_string(DNA_SIZE),
         activity_profile: parent
             ? parent.activity_profile
             : Object.keys(activity_profile_map)[Math.floor(Math.random() * 2)],

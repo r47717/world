@@ -1,3 +1,5 @@
+const randomstring = require('randomstring');
+
 /**
  * Returns index of random array elem
  * e.g. probability = [10, 20, 30, 40] (sum is 100%)
@@ -21,8 +23,16 @@ function random_probability(probability) {
     return result_index;
 }
 
+function random_number_string(length) {
+    return randomstring.generate({
+        charset: 'numeric',
+        length
+    });
+}
+
 module.exports = {
     random_probability,
+    random_number_string,
 };
 
 // tests
@@ -39,5 +49,9 @@ if (require.main === module) {
     console.log(prob);
     console.log(counts);
     console.log(counts.map(num => Math.round(num / tries * 100)));
+
+    console.log(random_number_string(30));
+    console.log(random_number_string(30));
+    console.log(random_number_string(30));
 }
 
