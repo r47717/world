@@ -30,9 +30,14 @@ function random_number_string(length) {
     });
 }
 
+function random_from_to(from, to) {
+    return +from + Math.round(Math.random() * (to - from));
+}
+
 module.exports = {
     random_probability,
     random_number_string,
+    random_from_to,
 };
 
 // tests
@@ -53,5 +58,7 @@ if (require.main === module) {
     console.log(random_number_string(30));
     console.log(random_number_string(30));
     console.log(random_number_string(30));
+
+    console.log(random_from_to(1, 10));
 }
 

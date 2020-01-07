@@ -1,7 +1,9 @@
 const uuid = require('uuid/v1');
 const {random_probability, random_number_string} = require('./utils');
+const {actions, activity_profile_map, activity_profiles} = require('./activity');
 
 const DNA_SIZE = 100;
+const COORDS_DIM = 5;
 const MAX_LOG_COUNT = 100;
 const LOG_ENABLED = false;
 const MAX_AGE = 100;
@@ -11,12 +13,6 @@ const MAX_BIRTH_RATE = 3;
 
 // private creature functions
 
-const actions = ['move', 'eat', 'sleep', 'birth'];
-const activity_profile_map = {
-    'active': [64, 15, 20, 3],
-    'sleepy': [44, 15, 40, 2],
-};
-
 function next_action() {
     const selected_index = random_probability(activity_profile_map[this.activity_profile]);
     return actions[selected_index];
@@ -24,30 +20,32 @@ function next_action() {
 
 const action_handlers = {
     eat() {
-        LOG_ENABLED && log.call(this, `eat action performed`);
+        log.call(this, `eat action performed`);
         this.energy += 3;
     },
 
     move() {
-        LOG_ENABLED && log.call(this, `move action performed`);
+        log.call(this, `move action performed`);
         this.energy -= 1;
     },
 
     sleep() {
-        LOG_ENABLED && log.call(this, `sleep action performed`);
+        log.call(this, `sleep action performed`);
         this.energy += 1;
     },
     birth() {
-        LOG_ENABLED && log.call(this, `birth action performed`);
+        log.call(this, `birth action performed`);
         this.energy -= 2;
     }
 };
 
 
 function log(message) {
-    this.logs.push(`${new Date()}: ${message}`);
-    if (this.logs.length > MAX_LOG_COUNT) {
-        this.logs.shift();
+    if (LOG_ENABLED) {
+        this.logs.push(`${new Date()}: ${message}`);
+        if (this.logs.length > MAX_LOG_COUNT) {
+            this.logs.shift();
+        }
     }
 }
 
@@ -99,11 +97,11 @@ function creature_factory(parent = null, type = 'generic') {
         dna: parent ? parent.dna : random_number_string(DNA_SIZE),
         activity_profile: parent
             ? parent.activity_profile
-            : Object.keys(activity_profile_map)[Math.floor(Math.random() * 2)],
+            : activity_profiles[Math.floor(Math.random() * activity_profiles.length)],
         age: 0,
         energy: 100,
         tags: new Set(),
-        coords: parent ? [...parent.coords] : [0, 0, 0, 0],
+        coords: parent ? [...parent.coords] : new Array(COORDS_DIM).fill(0),
         logs: [],
         stat: Object.assign({},
             ...actions.map(action => ({ [action]: 0 }))
