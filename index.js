@@ -1,11 +1,22 @@
 const chalk = require('chalk');
 const {creature_generator} = require('./seeder');
-const { make_bar } = require('./progress');
+const {make_bar} = require('./progress');
+const {events} = require('./events');
+
+let dead_count = 0;
+events.on('dead', () => {
+  dead_count += 1;
+});
+
+let creation_count = 0;
+events.on('creature generated', () => {
+  creation_count += 1;
+});
 
 const population = 10000;
 const world = [...creature_generator(population)];
 
-const days = 10000;
+const days = 1000;
 
 console.log(chalk.bold(`Initial population size: ${world.length}`));
 console.log(chalk.bold(`Life days: ${days}`));
@@ -25,6 +36,8 @@ for (let i = 0; i < days; i++) {
   const used = Math.round(process.memoryUsage().heapUsed / 1024 / 1024);
   bar.tick({
     'ram': used,
+    'created': creation_count,
+    'dead': dead_count,
   });
 }
 

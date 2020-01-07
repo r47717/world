@@ -13,7 +13,8 @@ const schema_ops = {
   min: (str) => (str.match(/min:(\d+)/) || [null, null])[1],
   max: (str) => (str.match(/max:(\d+)/) || [null, null])[1],
   mutable: (str) => (str.match(/mutable:(\d+)/) || [null, null])[1],
-  random: (prop) => random_from_to(schema_ops.min(schema[prop]), schema_ops.max(schema[prop])),
+  random: (prop) => random_from_to(schema_ops.min(schema[prop]),
+      schema_ops.max(schema[prop])),
 };
 
 function create() {

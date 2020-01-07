@@ -44,7 +44,6 @@ function race(funcs, values, callback) {
   }
 }
 
-
 // tests
 
 if (require.main === module) {

@@ -7,35 +7,35 @@ const randomstring = require('randomstring');
  * @param {Array} probability
  */
 function random_probability(probability) {
-    const sum = probability.reduce((acc, item) => acc + item);
-    const val = Math.round(Math.random() * sum);
+  const sum = probability.reduce((acc, item) => acc + item);
+  const val = Math.round(Math.random() * sum);
 
-    let result_index = 0;
-    let cumulative = 0;
-    for(let i = 0; i < probability.length; i++) {
-        cumulative += probability[i];
-        if (val <= cumulative) {
-            result_index = i;
-            break;
-        }
+  let result_index = 0;
+  let cumulative = 0;
+  for (let i = 0; i < probability.length; i++) {
+    cumulative += probability[i];
+    if (val <= cumulative) {
+      result_index = i;
+      break;
     }
+  }
 
-    return result_index;
+  return result_index;
 }
 
 function random_number_string(length) {
-    return !length ? '' : randomstring.generate({
-        charset: 'numeric',
-        length
-    });
+  return !length ? '' : randomstring.generate({
+    charset: 'numeric',
+    length,
+  });
 }
 
 function random_from_to(from, to) {
-    return +from + Math.round(Math.random() * (to - from));
+  return +from + Math.round(Math.random() * (to - from));
 }
 
 module.exports = {
-    random_probability,
-    random_number_string,
-    random_from_to,
+  random_probability,
+  random_number_string,
+  random_from_to,
 };
