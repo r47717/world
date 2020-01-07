@@ -43,7 +43,7 @@ module.exports = {
 // tests
 
 if (require.main === module) {
-    const prob = [0, 25, 25, 50];
+    const prob = ['0', '25', '25', '50'];
     const counts = [0, 0, 0, 0];
     const tries = 1000;
     for (let i = 0; i < tries; i++) {
