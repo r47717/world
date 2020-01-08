@@ -52,35 +52,9 @@ function mutate(dna) {
 }
 
 module.exports = {
+  schema_ops,
   create,
   duplicate,
   mutate,
 };
 
-// tests
-
-if (require.main === module) {
-  console.log(schema_ops.type(schema.attractiveness));
-  console.log(schema_ops.min(schema.attractiveness));
-  console.log(schema_ops.max(schema.attractiveness));
-
-  console.log(schema_ops.type(schema.activity));
-  console.log(schema_ops.min(schema.activity));
-  console.log(schema_ops.max(schema.activity));
-
-  console.log(schema_ops.type(schema.health));
-  console.log(schema_ops.min(schema.health));
-  console.log(schema_ops.max(schema.health));
-
-  console.log(schema_ops.type(schema.fertility));
-  console.log(schema_ops.min(schema.fertility));
-  console.log(schema_ops.max(schema.fertility));
-
-  const dna = create();
-  console.log(mutate(dna));
-  console.log(mutate(dna));
-  console.log(mutate(dna));
-  console.log(mutate(dna));
-  console.log(mutate(dna));
-  console.log(mutate(dna));
-}

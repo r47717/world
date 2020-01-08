@@ -2,17 +2,19 @@ const {random_probability, random_from_to, random_number_string} = require('../u
 
 test('random_probability', () => {
     const prob = [10, 25, 45, 20];
-    const counts = [0, 0, 0, 0];
-    const tries = 1000;
+    const tries = 10000;
+    let counts = [0, 0, 0, 0];
 
     for (let i = 0; i < tries; i++) {
         const index = random_probability(prob);
-        //const index = Math.floor(Math.random() * 4)
         counts[index] += 1;
     }
 
-    counts.map(num => Math.round(num / tries * 100));
+    counts = counts.map(num => Math.round(num / tries * 100));
 
+    for (let i = 0; i < counts.length; i++) {
+        expect(Math.abs(counts[i] - prob[i]) * 100 / prob[i]).toBeLessThanOrEqual(20);
+    }
 });
 
 test('random_number_string', () => {
