@@ -3,7 +3,7 @@ const ProgressBar = require('progress');
 module.exports = {
   make_bar: function(total, total_ticks = 100) {
     const tick_size = Math.round(total / total_ticks);
-    const bar = new ProgressBar(':bar :percent :elapsed(sec) :ramMB(ram) :created(created) :dead(dead)',
+    const bar = new ProgressBar(':bar :percent :elapsed(sec) :ramMB(ram) :created(created) :dead(dead) :mutation(mutation)',
         {
           total: total_ticks,
           complete: '=',

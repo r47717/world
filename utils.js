@@ -39,3 +39,12 @@ module.exports = {
   random_number_string,
   random_from_to,
 };
+
+if (require.main === module) {
+  for (let i = 0; i < 1000; i++) {
+    const val = random_from_to(0, 100);
+    if (val < 0.01) {
+      console.log(val);
+    }
+  }
+}

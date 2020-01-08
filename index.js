@@ -13,6 +13,12 @@ events.on('creature generated', () => {
   creation_count += 1;
 });
 
+let mutation_count = 0;
+events.on('mutation', () => {
+  mutation_count += 1;
+});
+
+
 const population = 10000;
 const world = [...creature_generator(population)];
 
@@ -38,6 +44,7 @@ for (let i = 0; i < days; i++) {
     'ram': used,
     'created': creation_count,
     'dead': dead_count,
+    'mutation': mutation_count,
   });
 }
 
